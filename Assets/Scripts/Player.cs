@@ -41,6 +41,14 @@ public class Player : MonoBehaviour
 
     private float lastShockwaveTime = -999f;
 
+    [Header("Teleport")]
+    public float teleportDistance = 8f;
+    public float teleportCooldown = 2f;
+    public float teleportInvincibleTime = 0.15f;
+
+    private float lastTeleportTime = -999f;
+    private BoxCollider2D playerCollider;
+
     Rigidbody2D rb;
     Animator anim;
     AudioSource source;
@@ -53,6 +61,7 @@ public class Player : MonoBehaviour
         source = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<BoxCollider2D>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         originalColors = new Color[spriteRenderers.Length];
         for (int i = 0; i < spriteRenderers.Length; i++)
@@ -116,6 +125,21 @@ public class Player : MonoBehaviour
             StartCoroutine(ShockwavePulse());
         }
 
+        // Teleport input
+        if (Input.GetKeyDown(KeyCode.Q) && Time.unscaledTime >= lastTeleportTime + teleportCooldown)
+        {
+            lastTeleportTime = Time.unscaledTime;
+            int dir = (input != 0) ? (int)Mathf.Sign(input) : (transform.eulerAngles.y == 0 ? 1 : -1);
+            float newX = transform.position.x + (dir * teleportDistance);
+            // Clamp to screen bounds
+            Vector3 camPos = Camera.main.transform.position;
+            float halfWidth = Camera.main.orthographicSize * Camera.main.aspect;
+            newX = Mathf.Clamp(newX, camPos.x - halfWidth + 0.5f, camPos.x + halfWidth - 0.5f);
+            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+            // Brief invincibility so hazards pass through
+            StartCoroutine(TeleportBlink());
+        }
+
         if (input != 0)
         {
             anim.SetBool("isRunning", true);
@@ -169,6 +193,20 @@ public class Player : MonoBehaviour
         transform.localScale = originalScale * 1.3f;
         yield return new WaitForSeconds(0.1f);
         transform.localScale = originalScale;
+    }
+
+    private System.Collections.IEnumerator TeleportBlink()
+    {
+        // Disable collider so hazards pass through
+        playerCollider.enabled = false;
+        // Flash transparent
+        foreach (SpriteRenderer sr in spriteRenderers)
+            sr.color = new Color(1f, 1f, 1f, 0.3f);
+        yield return new WaitForSeconds(teleportInvincibleTime);
+        playerCollider.enabled = true;
+        // Restore colors
+        for (int i = 0; i < spriteRenderers.Length; i++)
+            spriteRenderers[i].color = originalColors[i];
     }
 
     private void OnDrawGizmosSelected()
