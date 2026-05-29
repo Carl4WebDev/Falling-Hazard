@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
 
     private bool isSlowing = false;
     private float lastSlowEndTime = -999f;
+    private float slowStartTime = -999f;
     private Color[] originalColors;
     private SpriteRenderer[] spriteRenderers;
 
@@ -78,12 +79,13 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && !isSlowing && Time.unscaledTime >= lastSlowEndTime + slowCooldown)
         {
             isSlowing = true;
+            slowStartTime = Time.unscaledTime;
             Time.timeScale = slowTimeScale;
             Time.fixedDeltaTime = 0.02f * slowTimeScale;
             foreach (SpriteRenderer sr in spriteRenderers)
                 sr.color = new Color(0.5f, 0.5f, 1f, 1f); // blue tint
         }
-        if (isSlowing && (Input.GetKeyUp(KeyCode.LeftShift) || Time.unscaledTime >= lastSlowEndTime + slowCooldown + 3f))
+        if (isSlowing && (Input.GetKeyUp(KeyCode.LeftShift) || Time.unscaledTime >= slowStartTime + 3f))
         {
             isSlowing = false;
             Time.timeScale = 1f;
@@ -98,14 +100,18 @@ public class Player : MonoBehaviour
         {
             lastShockwaveTime = Time.unscaledTime;
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, shockwaveRadius);
+            Debug.Log("Shockwave hit " + hits.Length + " colliders");
+            int destroyed = 0;
             foreach (Collider2D hit in hits)
             {
                 if (hit.GetComponent<Enemy>() != null)
                 {
                     Instantiate(explosion, hit.transform.position, Quaternion.identity);
                     Destroy(hit.gameObject);
+                    destroyed++;
                 }
             }
+            Debug.Log("Shockwave destroyed " + destroyed + " hazards");
             // Visual pulse
             StartCoroutine(ShockwavePulse());
         }
@@ -163,6 +169,12 @@ public class Player : MonoBehaviour
         transform.localScale = originalScale * 1.3f;
         yield return new WaitForSeconds(0.1f);
         transform.localScale = originalScale;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, shockwaveRadius);
     }
 
     public void TakeDamage(int damageAmount) {
