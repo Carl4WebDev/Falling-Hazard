@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: e8ebf5778c1952443b3e7dba96148550
+guid: 367581e2bef2b7d4db468e0b9662c89d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 21300000
-    second: Hazards_0
+      213: -4284200064454302300
+    second: ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_0
   - first:
-      213: 21300002
-    second: Hazards_1
+      213: 5980683899392323222
+    second: ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_1
   - first:
-      213: 21300004
-    second: Hazards_2
+      213: 8116475147696685244
+    second: ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,9 +72,9 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
@@ -88,7 +88,7 @@ TextureImporter:
     overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Standalone
     maxTextureSize: 2048
@@ -101,20 +101,7 @@ TextureImporter:
     overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -127,72 +114,72 @@ TextureImporter:
     overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hazards_0
+      name: ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 380
-        height: 557
+        x: 14
+        y: 106
+        width: 192
+        height: 198
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 200f15a6b203744ddace73de1548a8dc
-      internalID: 21300000
+      spriteID: 4a5ee737db67b84c0800000000000000
+      internalID: -4284200064454302300
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hazards_1
+      name: ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_1
       rect:
         serializedVersion: 2
-        x: 418
-        y: 13
-        width: 572
-        height: 568
+        x: 222
+        y: 105
+        width: 187
+        height: 214
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: a51cc55627bed47df865dd30364d8eba
-      internalID: 21300002
+      spriteID: 69e6d29c158aff250800000000000000
+      internalID: 5980683899392323222
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hazards_2
+      name: ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_2
       rect:
         serializedVersion: 2
-        x: 1019
-        y: 57
-        width: 419
-        height: 499
+        x: 432
+        y: 104
+        width: 156
+        height: 228
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 0b466c15832324fcba690e45ee916363
-      internalID: 21300004
+      spriteID: cb04fb6d42383a070800000000000000
+      internalID: 8116475147696685244
       vertices: []
       indices: 
       edges: []
@@ -201,7 +188,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bcf49d857c99d6d42926ff64647bc3d3
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -211,9 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Hazards_0: 21300000
-      Hazards_1: 21300002
-      Hazards_2: 21300004
+      ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_0: -4284200064454302300
+      ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_1: 5980683899392323222
+      ChatGPT_Image_May_30__2026__01_37_32_AM-removebg-preview_2: 8116475147696685244
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

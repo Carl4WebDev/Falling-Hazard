@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5100203428083467756}
   - component: {fileID: 7842084285922220683}
   m_Layer: 0
-  m_Name: Hazard 3
+  m_Name: Hazard 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7965898215781355604, guid: ffeacfae39c51f24f909e71fee49ad80,
+  m_Sprite: {fileID: -4284200064454302300, guid: 367581e2bef2b7d4db468e0b9662c89d,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -149,7 +149,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.26, y: 4.64}
+    oldSize: {x: 4.8, y: 4.95}
     newSize: {x: 3.8, y: 5.57}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

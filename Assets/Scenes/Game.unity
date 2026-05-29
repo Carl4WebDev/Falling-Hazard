@@ -2205,6 +2205,14 @@ MonoBehaviour:
   healthDisplay: {fileID: 16404217}
   scoreManager: {fileID: 1835952944}
   speed: 25
+  dashSpeed: 100
+  dashDuration: 0.2
+  dashCooldown: 1
+  slowTimeScale: 0.3
+  slowCooldown: 5
+  shockwaveRadius: 5
+  shockwaveCooldown: 3
+  explosion: {fileID: 0}
   health: 3
 --- !u!61 &1349017184
 BoxCollider2D:
@@ -2600,6 +2608,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3766510686917911918, guid: c92d439d6fe47ce4b8a6badeed47d979,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3766510686917911919, guid: c92d439d6fe47ce4b8a6badeed47d979,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.1333333
+      objectReference: {fileID: 0}
+    - target: {fileID: 3766510686917911919, guid: c92d439d6fe47ce4b8a6badeed47d979,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.1333333
+      objectReference: {fileID: 0}
+    - target: {fileID: 3766510686917911919, guid: c92d439d6fe47ce4b8a6badeed47d979,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.6980392
+      objectReference: {fileID: 0}
     - target: {fileID: 3766510686917911919, guid: c92d439d6fe47ce4b8a6badeed47d979,
         type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
@@ -2661,9 +2689,12 @@ MonoBehaviour:
   - {fileID: 1490666626}
   - {fileID: 84441757}
   hazards:
-  - {fileID: 6774004486143402420, guid: b8374edc4a390a242a6d2e678aab5d79, type: 3}
+  - {fileID: 7812042644349388520, guid: 36dd4448c17c887489954f02bee241bc, type: 3}
   - {fileID: 9072391438415027888, guid: f25aa2ec09329d342b47597f5d7e0f8d, type: 3}
   - {fileID: 7812042644349388520, guid: 548b9fead157c3b4694b47522b3e1194, type: 3}
+  - {fileID: 6774004486143402420, guid: b8374edc4a390a242a6d2e678aab5d79, type: 3}
+  - {fileID: 7812042644349388520, guid: 775dd0900702ef04181fd76297eba34c, type: 3}
+  - {fileID: 7812042644349388520, guid: 23770eef5d13a714fb55260d3c599a6f, type: 3}
   startTimeBtwSpawns: 1.25
   minTimeBetweenSpawns: 0.5
   decrease: 0.1
