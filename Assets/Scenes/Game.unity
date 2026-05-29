@@ -290,6 +290,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16404215}
   m_CullTransparentMesh: 0
+--- !u!1 &54980648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3766510686917911921, guid: c92d439d6fe47ce4b8a6badeed47d979,
+    type: 3}
+  m_PrefabInstance: {fileID: 1376362751}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &84441756
 GameObject:
   m_ObjectHideFlags: 0
@@ -2212,7 +2218,7 @@ MonoBehaviour:
   slowCooldown: 5
   shockwaveRadius: 5
   shockwaveCooldown: 3
-  explosion: {fileID: 0}
+  explosion: {fileID: 54980648}
   health: 3
 --- !u!61 &1349017184
 BoxCollider2D:
