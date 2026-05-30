@@ -49,6 +49,12 @@ public class Player : MonoBehaviour
     private float lastTeleportTime = -999f;
     private BoxCollider2D playerCollider;
 
+    [Header("Invincibility")]
+    public float invincibleDuration = 1.5f;
+    public float flashInterval = 0.1f;
+
+    private bool isInvincible = false;
+
     Rigidbody2D rb;
     Animator anim;
     AudioSource source;
@@ -113,16 +119,18 @@ public class Player : MonoBehaviour
             int destroyed = 0;
             foreach (Collider2D hit in hits)
             {
-                if (hit.GetComponent<Enemy>() != null)
+                Enemy enemy = hit.GetComponent<Enemy>();
+                if (enemy != null)
                 {
                     Instantiate(explosion, hit.transform.position, Quaternion.identity);
-                    Destroy(hit.gameObject);
+                    enemy.ReturnToPool();
                     destroyed++;
                 }
             }
             Debug.Log("Shockwave destroyed " + destroyed + " hazards");
             // Visual pulse
             StartCoroutine(ShockwavePulse());
+            StartCoroutine(ShakeCamera(0.15f, 0.1f));
         }
 
         // Teleport input
@@ -187,6 +195,11 @@ public class Player : MonoBehaviour
         return isDashing;
     }
 
+    public bool IsInvincible()
+    {
+        return isInvincible;
+    }
+
     private System.Collections.IEnumerator ShockwavePulse()
     {
         Vector3 originalScale = transform.localScale;
@@ -209,6 +222,39 @@ public class Player : MonoBehaviour
             spriteRenderers[i].color = originalColors[i];
     }
 
+    private System.Collections.IEnumerator ShakeCamera(float intensity, float duration)
+    {
+        Transform cam = Camera.main.transform;
+        Vector3 originalPos = cam.localPosition;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * intensity;
+            float y = Random.Range(-1f, 1f) * intensity;
+            cam.localPosition = originalPos + new Vector3(x, y, 0f);
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        cam.localPosition = originalPos;
+    }
+
+    private System.Collections.IEnumerator InvincibilityFrames()
+    {
+        isInvincible = true;
+        float elapsed = 0f;
+        while (elapsed < invincibleDuration)
+        {
+            for (int i = 0; i < spriteRenderers.Length; i++)
+                spriteRenderers[i].color = new Color(originalColors[i].r, originalColors[i].g, originalColors[i].b, 0.3f);
+            yield return new WaitForSeconds(flashInterval);
+            for (int i = 0; i < spriteRenderers.Length; i++)
+                spriteRenderers[i].color = originalColors[i];
+            yield return new WaitForSeconds(flashInterval);
+            elapsed += flashInterval * 2f;
+        }
+        isInvincible = false;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -219,6 +265,8 @@ public class Player : MonoBehaviour
         source.Play();
         health -= damageAmount;
         healthDisplay.text = health.ToString();
+        StartCoroutine(ShakeCamera(0.3f, 0.2f));
+        StartCoroutine(InvincibilityFrames());
 
         if (health <= 0) {
             scoreManager.StopScore();

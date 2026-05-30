@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,11 +15,18 @@ public class Enemy : MonoBehaviour
 
     public GameObject explosion;
 
+    [HideInInspector] public System.Action<GameObject> returnToPool;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
+    {
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        speed = Random.Range(minSpeed, maxSpeed);
+    }
+
+    void OnEnable()
     {
         speed = Random.Range(minSpeed, maxSpeed);
-        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -32,17 +39,38 @@ public class Enemy : MonoBehaviour
     {
 
         if(hitObject.tag == "Player") {
-            playerScript.TakeDamage(damage);
+            if (playerScript != null && !playerScript.IsInvincible()) {
+                playerScript.TakeDamage(damage);
+            }
             Instantiate(explosion, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            ReturnToPool();
         }
 
         if (hitObject.tag == "Ground") {
             Instantiate(explosion, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            ReturnToPool();
         }
 
     }
 
+    public void ResetState()
+    {
+        speed = Random.Range(minSpeed, maxSpeed);
+        if (playerScript == null)
+        {
+            playerScript = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
+        }
+    }
 
+    public void ReturnToPool()
+    {
+        if (returnToPool != null)
+        {
+            returnToPool.Invoke(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 }
