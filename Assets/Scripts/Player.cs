@@ -181,8 +181,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        // Storing player's input
-        input = Input.GetAxisRaw("Horizontal");
+        // Storing player's input (arrow keys only — A/W/D are used for skills)
+        float left = Input.GetKey(KeyCode.LeftArrow) ? -1f : 0f;
+        float right = Input.GetKey(KeyCode.RightArrow) ? 1f : 0f;
+        input = left + right;
 
         if (isDashing)
         {
