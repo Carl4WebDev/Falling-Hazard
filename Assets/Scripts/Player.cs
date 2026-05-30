@@ -49,6 +49,14 @@ public class Player : MonoBehaviour
     private float lastTeleportTime = -999f;
     private BoxCollider2D playerCollider;
 
+    [Header("Camera Zoom")]
+    public float slowMoZoomOffset = -0.5f;
+    public float shockwaveZoomOffset = 1f;
+    public float zoomSpeed = 8f;
+
+    private float defaultZoom;
+    private Coroutine zoomCoroutine;
+
     [Header("Invincibility")]
     public float invincibleDuration = 1.5f;
     public float flashInterval = 0.1f;
@@ -67,6 +75,7 @@ public class Player : MonoBehaviour
         source = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        defaultZoom = Camera.main.orthographicSize;
         playerCollider = GetComponent<BoxCollider2D>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         originalColors = new Color[spriteRenderers.Length];
@@ -91,27 +100,29 @@ public class Player : MonoBehaviour
         }
 
         // Slow Motion input (hold)
-        if (Input.GetKey(KeyCode.LeftShift) && !isSlowing && Time.unscaledTime >= lastSlowEndTime + slowCooldown)
+        if (Input.GetKey(KeyCode.A) && !isSlowing && Time.unscaledTime >= lastSlowEndTime + slowCooldown)
         {
             isSlowing = true;
             slowStartTime = Time.unscaledTime;
             Time.timeScale = slowTimeScale;
             Time.fixedDeltaTime = 0.02f * slowTimeScale;
+            ZoomTo(defaultZoom + slowMoZoomOffset);
             foreach (SpriteRenderer sr in spriteRenderers)
                 sr.color = new Color(0.5f, 0.5f, 1f, 1f); // blue tint
         }
-        if (isSlowing && (Input.GetKeyUp(KeyCode.LeftShift) || Time.unscaledTime >= slowStartTime + 3f))
+        if (isSlowing && (Input.GetKeyUp(KeyCode.A) || Time.unscaledTime >= slowStartTime + 3f))
         {
             isSlowing = false;
             Time.timeScale = 1f;
             Time.fixedDeltaTime = 0.02f;
+            ZoomTo(defaultZoom);
             lastSlowEndTime = Time.unscaledTime;
             for (int i = 0; i < spriteRenderers.Length; i++)
                 spriteRenderers[i].color = originalColors[i];
         }
 
         // Shockwave input
-        if (Input.GetKeyDown(KeyCode.E) && Time.unscaledTime >= lastShockwaveTime + shockwaveCooldown)
+        if (Input.GetKeyDown(KeyCode.S) && Time.unscaledTime >= lastShockwaveTime + shockwaveCooldown)
         {
             lastShockwaveTime = Time.unscaledTime;
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, shockwaveRadius);
@@ -131,10 +142,11 @@ public class Player : MonoBehaviour
             // Visual pulse
             StartCoroutine(ShockwavePulse());
             StartCoroutine(ShakeCamera(0.15f, 0.1f));
+            StartCoroutine(ZoomPulse(defaultZoom + shockwaveZoomOffset, defaultZoom, 0.3f));
         }
 
         // Teleport input
-        if (Input.GetKeyDown(KeyCode.Q) && Time.unscaledTime >= lastTeleportTime + teleportCooldown)
+        if (Input.GetKeyDown(KeyCode.D) && Time.unscaledTime >= lastTeleportTime + teleportCooldown)
         {
             lastTeleportTime = Time.unscaledTime;
             int dir = (input != 0) ? (int)Mathf.Sign(input) : (transform.eulerAngles.y == 0 ? 1 : -1);
@@ -222,6 +234,33 @@ public class Player : MonoBehaviour
             spriteRenderers[i].color = originalColors[i];
     }
 
+    private void ZoomTo(float target)
+    {
+        if (zoomCoroutine != null) StopCoroutine(zoomCoroutine);
+        zoomCoroutine = StartCoroutine(ZoomRoutine(target));
+    }
+
+    private System.Collections.IEnumerator ZoomRoutine(float target)
+    {
+        while (Mathf.Abs(Camera.main.orthographicSize - target) > 0.01f)
+        {
+            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, target, zoomSpeed * Time.unscaledDeltaTime);
+            yield return null;
+        }
+        Camera.main.orthographicSize = target;
+    }
+
+    private System.Collections.IEnumerator ZoomPulse(float peak, float target, float holdTime)
+    {
+        // Cancel any in-flight zoom lerp
+        if (zoomCoroutine != null) StopCoroutine(zoomCoroutine);
+        // Zoom out to peak instantly
+        Camera.main.orthographicSize = peak;
+        yield return new WaitForSecondsRealtime(holdTime);
+        // Lerp back to target
+        ZoomTo(target);
+    }
+
     private System.Collections.IEnumerator ShakeCamera(float intensity, float duration)
     {
         Transform cam = Camera.main.transform;
@@ -265,6 +304,7 @@ public class Player : MonoBehaviour
         source.Play();
         health -= damageAmount;
         healthDisplay.text = health.ToString();
+        scoreManager.OnDamageTaken();
         StartCoroutine(ShakeCamera(0.3f, 0.2f));
         StartCoroutine(InvincibilityFrames());
 

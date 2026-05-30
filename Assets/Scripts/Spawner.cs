@@ -19,6 +19,11 @@ public class Spawner : MonoBehaviour
     [Header("Object Pooling")]
     public int poolSize = 5;
 
+    [Header("Hazard Variants")]
+    public bool enableZigzag = true;
+    public bool enableFast = true;
+    public bool enableSplit = true;
+
     private Queue<GameObject>[] pools;
 
     void Start()
@@ -84,10 +89,11 @@ public class Spawner : MonoBehaviour
         obj.transform.position = position;
         obj.SetActive(true);
 
-        // Reset enemy state
+        // Reset enemy state and assign variant
         Enemy enemy = obj.GetComponent<Enemy>();
         if (enemy != null)
         {
+            enemy.hazardType = GetRandomVariant();
             enemy.ResetState();
         }
 
@@ -106,5 +112,15 @@ public class Spawner : MonoBehaviour
                 pools[capturedIndex].Enqueue(returnedObj);
             };
         }
+    }
+
+    private Enemy.HazardType GetRandomVariant()
+    {
+        List<Enemy.HazardType> available = new List<Enemy.HazardType>();
+        available.Add(Enemy.HazardType.Straight);
+        if (enableZigzag) available.Add(Enemy.HazardType.Zigzag);
+        if (enableFast) available.Add(Enemy.HazardType.Fast);
+        if (enableSplit) available.Add(Enemy.HazardType.Split);
+        return available[Random.Range(0, available.Count)];
     }
 }
