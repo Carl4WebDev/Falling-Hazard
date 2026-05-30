@@ -81,6 +81,15 @@ public class Enemy : MonoBehaviour
     {
 
         if(hitObject.tag == "Player") {
+            if (playerScript != null && playerScript.IsDashing())
+            {
+                // Dash kill — player destroys the hazard
+                Instantiate(explosion, transform.position, Quaternion.identity);
+                ScoreManager sm = FindFirstObjectByType<ScoreManager>();
+                if (sm != null) sm.AddKill();
+                ReturnToPool();
+                return;
+            }
             if (playerScript != null && !playerScript.IsInvincible()) {
                 playerScript.TakeDamage(damage);
             }

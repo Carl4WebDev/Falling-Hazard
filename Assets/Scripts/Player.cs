@@ -138,6 +138,12 @@ public class Player : MonoBehaviour
                     destroyed++;
                 }
             }
+            if (destroyed > 0)
+            {
+                ScoreManager sm = FindFirstObjectByType<ScoreManager>();
+                for (int i = 0; i < destroyed; i++)
+                    if (sm != null) sm.AddKill();
+            }
             Debug.Log("Shockwave destroyed " + destroyed + " hazards");
             // Visual pulse
             StartCoroutine(ShockwavePulse());

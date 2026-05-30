@@ -16,6 +16,10 @@ public class ScoreManager : MonoBehaviour
     private float timeSinceLastHit = 0f;
     private int highScore;
 
+    [Header("Kill Counter")]
+    public Text killDisplay;
+    private int killCount = 0;
+
     void Start()
     {
         highScore = PlayerPrefs.GetInt("HighScore", 0);
@@ -47,6 +51,28 @@ public class ScoreManager : MonoBehaviour
         return multiplier;
     }
 
+    public void AddKill()
+    {
+        killCount++;
+        if (killDisplay != null)
+            killDisplay.text = killCount.ToString();
+    }
+
+    public int GetKills()
+    {
+        return killCount;
+    }
+
+    public void PauseScore()
+    {
+        isRunning = false;
+    }
+
+    public void ResumeScore()
+    {
+        isRunning = true;
+    }
+
     public void StopScore()
     {
         isRunning = false;
@@ -57,6 +83,6 @@ public class ScoreManager : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", highScore);
             PlayerPrefs.Save();
         }
-        finalScoreDisplay.text = "Score: " + finalScore + "\nBest: " + highScore;
+        finalScoreDisplay.text = "Score: " + finalScore + "\nBest: " + highScore + "\nKills: " + killCount;
     }
 }
